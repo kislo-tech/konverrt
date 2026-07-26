@@ -1,0 +1,17 @@
+[package]
+name = "lingonberry"
+version = "0.1.0"
+authors = ["kryvashek@gmail.com"]
+edition = "2021"
+description = "A small library intended to simplify conversion of Rust Results into HTTP responses."
+readme = "README.md"
+repository = "https://github.com/kislo-tech/lingonberry"
+license = "GPL-2.0"
+keywords = ["error", "http", "response", "result"]
+categories = [
+    "network-programming",
+    "rust-patterns",
+    "web-programming::http-server",
+]
+
+[dependencies]
