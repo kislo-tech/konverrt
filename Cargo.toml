@@ -15,3 +15,12 @@ categories = [
 ]
 
 [dependencies]
+anyhow = "1.0"
+axum = "0.8"
+cubob = { version = "1.3.4", features = ["embed", "instant", "path"] }
+paste = "1.0.15"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+tracing = "0.1"
+utoipa = "5.4"

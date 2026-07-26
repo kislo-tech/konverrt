@@ -1,7 +1,9 @@
 Lingonberry
 ===========
 
-Lingonberry is supposed to be a small library intended to simplify conversion of Rust `Result`s into HTTP responses.
+Lingonberry is a small library intended to simplify conversion of Rust `Result`s into HTTP responses.
+
+Lingonberry is supposed to be used with [axum](https://crates.io/crates/axum) and [utoipa](https://crates.io/crates/utoipa), alhough over time bindings to them may later become controlled via corresponding features.
 
 Licence
 -------
