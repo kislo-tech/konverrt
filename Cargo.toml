@@ -1,11 +1,11 @@
 [package]
-name = "lingonberry"
+name = "konverrt"
 version = "0.1.0"
-authors = ["kryvashek@gmail.com"]
+authors = ["kryvashek@gmail.com", "acacita@yandex.ru"]
 edition = "2021"
 description = "A small library intended to simplify conversion of Rust Results into HTTP responses."
 readme = "README.md"
-repository = "https://github.com/kislo-tech/lingonberry"
+repository = "https://github.com/kislo-tech/konverrt"
 license = "GPL-2.0"
 keywords = ["error", "http", "response", "result"]
 categories = [
