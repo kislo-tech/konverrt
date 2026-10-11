@@ -15,7 +15,6 @@ categories = [
 ]
 
 [features]
-default = ["axum", "utoipa"]
 axum = ["dep:axum"]
 utoipa = ["dep:utoipa"]
 

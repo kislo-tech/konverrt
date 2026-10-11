@@ -8,8 +8,6 @@ mod with_status;
 #[cfg(feature = "axum")]
 mod axum_adapter;
 
-// use std::borrow;
-
 use self::error_chain::{IntoErrorChain, SourceKind};
 pub use self::{
     error::Error,

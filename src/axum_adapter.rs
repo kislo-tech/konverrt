@@ -19,7 +19,7 @@ mod tests {
     use axum_test::{TestResponse, TestServer};
     use serde::Serialize;
     use serde_json::json;
-    use serde_json::Value;
+    use std::collections::HashMap;
     use std::future::IntoFuture;
 
     use crate::{Failure, Success};
@@ -60,14 +60,17 @@ mod tests {
         .with_status(http::StatusCode::BAD_REQUEST)
     }
 
-    async fn bad_request() -> WithStatus<Value> {
-        WithStatus::new(json!({ "status": "bad_request" }))
-            .with_status(http::StatusCode::BAD_REQUEST)
+    async fn bad_request() -> WithStatus<HashMap<&'static str, &'static str>> {
+        WithStatus::new(status_body("bad_request")).with_status(http::StatusCode::BAD_REQUEST)
     }
 
-    async fn internal_error() -> WithStatus<Value> {
-        WithStatus::new(json!({ "status": "internal_error" }))
+    async fn internal_error() -> WithStatus<HashMap<&'static str, &'static str>> {
+        WithStatus::new(status_body("internal_error"))
             .with_status(http::StatusCode::INTERNAL_SERVER_ERROR)
+    }
+
+    fn status_body(status: &'static str) -> HashMap<&'static str, &'static str> {
+        HashMap::from([("status", status)])
     }
 
     fn get(server: &TestServer, path: &str) -> TestResponse {
@@ -95,7 +98,10 @@ mod tests {
         response
             .assert_status(http::StatusCode::CREATED)
             .assert_header(http::header::CONTENT_TYPE, "application/json")
-            .assert_text(r#"{"message":"created","count":2}"#);
+            .assert_json(&json!({
+                "message": "created",
+                "count": 2,
+            }));
     }
 
     #[test]
@@ -105,7 +111,7 @@ mod tests {
 
         response
             .assert_status(http::StatusCode::ACCEPTED)
-            .assert_text(r#"{"message":"done"}"#);
+            .assert_json(&json!({ "message": "done" }));
     }
 
     #[test]
@@ -119,9 +125,6 @@ mod tests {
                 "message_code": "bad_request",
                 "details": "Invalid request",
                 "meta": { "field": "email" },
-            }))
-            .assert_text(
-                r#"{"message_code":"bad_request","details":"Invalid request","meta":{"field":"email"}}"#,
-            );
+            }));
     }
 }
