@@ -1,8 +1,6 @@
 use std::{borrow, panic};
 
-use axum::http;
 use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
 
 use super::{IntoErrorChain, SourceKind, ToStatusCode, WithStatus};
 
@@ -12,7 +10,8 @@ use super::{IntoErrorChain, SourceKind, ToStatusCode, WithStatus};
 ///
 /// The underlying error that caused the failure is NOT serialized — it is logged via
 /// `tracing` when the failure is built, so internal details never reach clients.
-#[derive(Debug, Clone, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 pub struct Failure {
     /// Stable machine-readable error code, e.g. `bad_request` or `appointment_conflict`.
     pub message_code: borrow::Cow<'static, str>,
@@ -21,7 +20,7 @@ pub struct Failure {
     pub details: borrow::Cow<'static, str>,
 
     /// Optional machine-readable payload accompanying the error.
-    #[schema(value_type = Option<Object>)]
+    #[cfg_attr(feature = "utoipa", schema(value_type = Option<Object>))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<serde_json::Value>,
 }
