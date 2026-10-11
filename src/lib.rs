@@ -5,9 +5,10 @@ mod status_code;
 mod success;
 mod with_status;
 
-// use std::borrow;
+#[cfg(feature = "axum")]
+mod axum_adapter;
 
-use axum::{http, response};
+// use std::borrow;
 
 use self::error_chain::{IntoErrorChain, SourceKind};
 pub use self::{
@@ -40,17 +41,4 @@ impl ToStatusCode for http::StatusCode {
     fn to_status_code(&self) -> http::StatusCode {
         *self
     }
-}
-
-/// Convert given serializable value into response (with JSON content)
-/// and specified [`http::StatusCode`] value.
-pub fn make_json_response(
-    value: impl serde::Serialize,
-    code: http::StatusCode,
-) -> response::Response {
-    use response::IntoResponse as _;
-
-    let mut response = axum::Json(value).into_response();
-    *response.status_mut() = code;
-    response
 }

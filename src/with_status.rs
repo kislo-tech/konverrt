@@ -1,9 +1,8 @@
 use std::fmt;
 
-use axum::{http, response};
 use serde::{Deserialize, Serialize};
 
-use super::{make_json_response, status_code, ToStatusCode};
+use super::{status_code, ToStatusCode};
 
 /// Represents an error explicitly bound with arbitrary [`http::StatusCode`] value.
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -42,6 +41,10 @@ impl<T> WithStatus<T> {
     pub const fn map(code: http::StatusCode) -> impl FnOnce(T) -> Self {
         move |value| Self { value, code }
     }
+
+    pub fn into_parts(self) -> (T, http::StatusCode) {
+        (self.value, self.code)
+    }
 }
 
 impl<T> From<T> for WithStatus<T> {
@@ -62,15 +65,5 @@ where
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         cubob::display_struct(f, &[(&"code", &self.code), (&"value", &self.value)])
-    }
-}
-
-impl<T> response::IntoResponse for WithStatus<T>
-where
-    T: serde::Serialize,
-{
-    fn into_response(self) -> response::Response {
-        let Self { value, code } = self;
-        make_json_response(value, code)
     }
 }
