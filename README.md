@@ -1,7 +1,6 @@
 # Konverrt
 
-# <img src="misc/konverrt-kisa.png" alt="Pixelated black cat inside an envelope"/>
-
+<img src="misc/konverrt-kisa.png" alt="Pixelated black cat inside an envelope"/>
 
 Konverrt is a small helper crate for turning Rust handler `Result`s into predictable HTTP responses.
 
@@ -37,14 +36,14 @@ serializable, so it can be returned from handlers directly.
 Konverrt has no default features. Installing it bare gives you the framework-neutral core types:
 
 ```toml
-konverrt = "0.1"
+konverrt = "0.2"
 ```
 
 Enable the adapter you actually use:
 
 ```toml
-konverrt = { version = "0.1", features = ["axum"] }
-konverrt = { version = "0.1", features = ["axum", "utoipa"] }
+konverrt = { version = "0.2", features = ["axum"] }
+konverrt = { version = "0.2", features = ["axum", "utoipa"] }
 ```
 
 ## Feature Flags
@@ -123,6 +122,9 @@ Response body:
 ## Framework Support
 
 Axum is supported through the `axum` feature.
+
+OpenAPI schema generation is supported through the `utoipa` feature, which derives `ToSchema` for
+the shared `Success` and `Failure` response bodies.
 
 Other HTTP frameworks will be added.
 

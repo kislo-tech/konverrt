@@ -1,6 +1,6 @@
 [package]
 name = "konverrt"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["kryvashek@gmail.com", "acacita@yandex.ru"]
 edition = "2021"
 description = "A small library intended to simplify conversion of Rust Results into HTTP responses."
