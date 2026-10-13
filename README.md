@@ -43,6 +43,7 @@ Enable the adapter you actually use:
 
 ```toml
 konverrt = { version = "0.2", features = ["axum"] }
+konverrt = { version = "0.2", features = ["poem-openapi"] }
 konverrt = { version = "0.2", features = ["axum", "utoipa"] }
 ```
 
@@ -51,6 +52,7 @@ konverrt = { version = "0.2", features = ["axum", "utoipa"] }
 | Feature | What it enables |
 | --- | --- |
 | `axum` | Axum response conversion for `WithStatus<T>` |
+| `poem-openapi` | Poem OpenAPI response wrapper for `WithStatus<T>` results |
 | `utoipa` | OpenAPI schema derives for `Success` and `Failure` |
 
 With no features enabled, the crate still gives you the shared response types, status handling, and
@@ -119,9 +121,46 @@ Response body:
 }
 ```
 
+## Poem OpenAPI
+
+With the `poem-openapi` feature enabled, use `KonverrtResponse<T>` as the response type for OpenAPI
+handlers. Convert a normal `StatusedResult<T>` into it at the edge:
+
+```rust
+use http::StatusCode;
+use konverrt::{
+    poem_openapi_adapter::KonverrtResponse,
+    StatusedResult,
+    WithStatus,
+};
+use poem_openapi::Object;
+
+#[derive(Object)]
+struct UserDto {
+    id: String,
+}
+
+async fn create_user() -> KonverrtResponse<UserDto> {
+    let result: StatusedResult<UserDto> = Ok(
+        WithStatus::new(UserDto {
+            id: "user_1".to_owned(),
+        })
+        .with_status(StatusCode::CREATED),
+    );
+
+    result.into()
+}
+```
+
+The adapter documents dynamic status codes with OpenAPI status ranges: `2XX` for success, `4XX` for
+client failures, and `5XX` for server failures. Error responses use the same public shape as
+`Failure`.
+
 ## Framework Support
 
 Axum is supported through the `axum` feature.
+
+Poem OpenAPI is supported through the `poem-openapi` feature.
 
 OpenAPI schema generation is supported through the `utoipa` feature, which derives `ToSchema` for
 the shared `Success` and `Failure` response bodies.
