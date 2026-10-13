@@ -1,6 +1,5 @@
 use std::fmt;
 
-use axum::http;
 use paste::paste;
 use serde::{de, ser};
 
@@ -113,8 +112,6 @@ fn convert_u16_to_status_code(value: u16) -> Result<http::StatusCode, errors::St
 pub mod errors {
     use std::str;
 
-    use super::http::status;
-
     #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
     #[error("failed converting {typename} value '{value}' into u16: {source}")]
     pub struct U16FromInt<S, E> {
@@ -134,6 +131,6 @@ pub mod errors {
     #[error("failed converting u16 value '{value}' into status code: {source}")]
     pub struct StatusFromU16 {
         pub(super) value: u16,
-        pub(super) source: status::InvalidStatusCode,
+        pub(super) source: http::status::InvalidStatusCode,
     }
 }

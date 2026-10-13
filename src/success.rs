@@ -1,14 +1,13 @@
 use std::{borrow, fmt};
 
-use axum::http;
 use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
 
 use super::WithStatus;
 
 /// Represents successfull result value of handler, converted into a `String` or `&'static str`.
 /// Inteneded to be used when no other meaningful value should be returned.
-#[derive(Debug, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "utoipa", derive(utoipa::ToSchema))]
 pub struct Success {
     /// Message to pass to client.
     pub message: borrow::Cow<'static, str>,

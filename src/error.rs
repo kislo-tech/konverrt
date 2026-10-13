@@ -1,6 +1,5 @@
 use std::fmt;
 
-use axum::http;
 use serde::{Deserialize, Serialize};
 
 use super::{status_code, ToStatusCode};
