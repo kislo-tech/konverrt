@@ -8,6 +8,9 @@ mod with_status;
 #[cfg(feature = "axum")]
 mod axum_adapter;
 
+#[cfg(feature = "poem-openapi")]
+pub mod poem_openapi_adapter;
+
 use self::error_chain::{IntoErrorChain, SourceKind};
 pub use self::{
     error::Error,
